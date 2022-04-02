@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://template/core/ui/theme.tres" type="Theme" id=1]
-[ext_resource path="res://template/core/fonts/open-sans/open-sans-bold.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://template/core/ui/menu/menu.gd" type="Script" id=5]
+[ext_resource path="res://core/ui/theme.tres" type="Theme" id=1]
+[ext_resource path="res://core/fonts/open-sans/open-sans-regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://core/ui/menu/menu.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=5]
 size = 60
@@ -35,9 +35,9 @@ anchor_bottom = 1.0
 margin_bottom = -339.0
 
 [node name="Title" type="Label" parent="CenterContainer"]
-margin_left = 145.0
+margin_left = 158.0
 margin_top = 89.0
-margin_right = 878.0
+margin_right = 865.0
 margin_bottom = 172.0
 custom_fonts/font = SubResource( 5 )
 text = "Godot Game Template"
@@ -116,18 +116,18 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="MadeByLabel" type="Label" parent="Credits"]
-margin_right = 243.0
+margin_right = 371.0
 margin_bottom = 34.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "made by:"
 
 [node name="Developer1" type="Label" parent="Credits"]
 margin_top = 38.0
-margin_right = 243.0
+margin_right = 371.0
 margin_bottom = 72.0
 grow_horizontal = 0
 custom_colors/font_color = Color( 0.92549, 0.92549, 0.92549, 1 )
-text = "Crystal Bit community"
+text = "Crystal Bit community & Bakneko"
 
 [node name="Developer2" type="Label" parent="Credits"]
 visible = false

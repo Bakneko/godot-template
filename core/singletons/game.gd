@@ -22,7 +22,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	scenes = preload("res://addons/template/scenes.gd").new()
+	scenes = preload("res://core/singletons/scenes.gd").new()
 	scenes.name = "Scenes"
 	get_node("/root/").call_deferred("add_child", scenes)
 

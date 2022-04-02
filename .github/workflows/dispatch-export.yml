@@ -5,7 +5,7 @@ on:
       godot_version:
         description: "Godot Version"
         required: true
-        default: "3.4.2"
+        default: "3.4.4"
       export_platform:
         description: "Export Platform - all|windows|linux|web|macos|android"
         required: true
@@ -17,7 +17,7 @@ on:
       export_name:
         description: "Export Name"
         required: true
-        default: "godot-game-template"
+        default: "godot-template"
       release_android:
         description: "Android Release Build"
         required: false
