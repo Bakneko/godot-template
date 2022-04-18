@@ -1,67 +1,94 @@
-# Game autoload. Use `Game` global variable to access.
-# Eg: `Game.change_scene("res://template/maps/gameplay/gameplay.tscn")`
 extends Node
 
 onready var transitions = get_node_or_null("/root/Transitions")
-
 var pause_scenes_on_transitions = false
 var prevent_input_on_transitions = true
+
 var scenes: Scenes
 var size: Vector2
 
 
+# ----------------------------------------
+# Notes
+# ----------------------------------------
+# Game autoload. Use `Game` global variable to access.
+# Eg: `Game.change_scene("res://template/maps/gameplay/gameplay.tscn")`
+
+
+# ----------------------------------------
+# Entrypoints
+# ----------------------------------------
+
+
 func _enter_tree() -> void:
-	pause_mode = Node.PAUSE_MODE_PROCESS # needed to make "prevent_input_on_transitions" work even if the game is paused
-	_register_size()
-	get_tree().connect("screen_resized", self, "_on_screen_resized")
+	# Need to make "prevent_input_on_transitions" work even if the game is paused.
+	pause_mode = Node.PAUSE_MODE_PROCESS 
+
+	# Update screen size when screen is being resized.
+	_update_screen_size()
+	var _t = get_tree().connect("screen_resized", self, "_on_screen_resized")
+
+	# If Transition exists, connect signal.
 	if transitions:
 		transitions.connect("transition_started", self, "_on_Transitions_transition_started")
 		transitions.connect("transition_finished", self, "_on_Transitions_transition_finished")
-#	add_script("Utils", "utils", "res://addons/game-template/utils.gd")
 
 
 func _ready() -> void:
+	# Add 'Scenes' singleton node.
 	scenes = preload("res://core/singletons/scenes.gd").new()
 	scenes.name = "Scenes"
 	get_node("/root/").call_deferred("add_child", scenes)
 
 
+func _input(_event: InputEvent):
+	if transitions and prevent_input_on_transitions and transitions.is_displayed():
+		# Prevents all inputs while a graphic transition is playing.
+		get_tree().set_input_as_handled()
+
+
+# ----------------------------------------
+# Acquire Screen Size
+# ----------------------------------------
+
+
 func _on_screen_resized():
-	_register_size()
+	_update_screen_size()
 
 
-func _register_size():
+func _update_screen_size():
 	size = get_viewport().get_visible_rect().size
 
 
-func change_scene(new_scene: String, params = {}):
-	if not Utils.file_exists(new_scene):
-		printerr("Scene file not found: ", new_scene)
+# ----------------------------------------
+# Change Scene
+# ----------------------------------------
+
+
+func change_scene(scene: String, params = {}):
+	if not Utils.file_exists(scene):
+		printerr("[ERROR] Scene file not found: ", scene)
 		return
-
-	if OS.has_feature('HTML5'): # Godot 3.2.3 HTML5 export template does not support multithreading
-		scenes.change_scene_background_loading(new_scene, params) # single-thread
 	else:
-		scenes.change_scene_multithread(new_scene, params) # multi-thread
+		# use multi-thread
+		scenes.change_scene_multithread(scene, params)
 
 
-# Restart the current scene
+## Restart current scene.
 func restart_scene():
 	var scene_data = scenes.get_last_loaded_scene_data()
 	change_scene(scene_data.path, scene_data.params)
 
 
-# Restart the current scene, but use given params
-func restart_scene_with_params(override_params):
+## Restart current scene, but use given parameters.
+func restart_scene_with_params(params):
 	var scene_data = scenes.get_last_loaded_scene_data()
-	change_scene(scene_data.path, override_params)
+	change_scene(scene_data.path, params)
 
 
-# Prevents all inputs while a graphic transition is playing.
-func _input(_event: InputEvent):
-	if transitions and prevent_input_on_transitions and transitions.is_displayed():
-		# prevent all input events
-		get_tree().set_input_as_handled()
+# ----------------------------------------
+# Transitions Singal
+# ----------------------------------------
 
 
 func _on_Transitions_transition_started(anim_name):
@@ -74,12 +101,17 @@ func _on_Transitions_transition_finished(anim_name):
 		get_tree().paused = false
 
 
-func add_script(script_name, self_prop_name, script_path):
-	var new_script: Node = load(script_path).new()
-	new_script.name = script_name
-	call_deferred("add_script_node", new_script, self_prop_name)
+# ----------------------------------------
+# Add Script Node
+# ----------------------------------------
 
 
-func add_script_node(new_node, prop_name):
-	get_tree().root.add_child(new_node)
-	self[prop_name] = new_node
+func add_script(name, code_name, path):
+	var script: Node = load(path).new()
+	script.name = name
+	call_deferred("add_script_node", script, code_name)
+
+
+func add_script_node(node, code_name):
+	get_tree().root.add_child(node)
+	self[code_name] = node

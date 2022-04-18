@@ -1,11 +1,3 @@
-# Scenes Manager.
-# When the loading of a new scene is completed, it calls
-# two methods on the new loaded scene (if they are defined):
-# 1. `pre_start(params)`: called as soon as the scene is loaded in memory.
-#   It passes the `params` object received by
-#   `Game.change_scene(new_scene, params)`.
-# 2. `start()`: called when the scene transition is finished and when the
-#  gameplay input is unlocked
 class_name Scenes
 extends Node
 
@@ -15,15 +7,27 @@ signal change_finished
 const MINIMUM_TRANSITION_DURATION = 300 # ms
 
 onready var transitions: Transition = get_node_or_null("/root/Transitions")
-onready var _history = preload("res://core/scenes-history.gd").new()
+onready var _history = preload("res://core/classes/scene_history.gd").new()
 onready var _loader_ri = \
-  preload("res://core/resource_interactive_loader.gd").new()
+  preload("res://core/classes/resource_interactive_loader.gd").new()
 onready var _loader_mt = \
-  preload("res://core/resource_multithread_loader.gd").new()
+  preload("res://core/classes/resource_multithread_loader.gd").new()
 
 # params caching
 var _params = {}
 var _loading_start_time = 0
+
+
+# ----------------------------------------
+# Notes
+# ----------------------------------------
+# When the loading of a new scene is completed, it calls
+# two methods on the new loaded scene (if they are defined):
+# 1. `pre_start(params)`: called as soon as the scene is loaded in memory.
+#    It passes the `params` object received by
+#    `Game.change_scene(new_scene, params)`.
+# 2. `start()`: called when the scene transition is finished and when the
+#    gameplay input is unlocked.
 
 
 func _ready():
@@ -42,7 +46,7 @@ func _ready():
 			transitions,
 			"_on_resource_stage_loaded"
 		)
-	connect("change_started", self, "_on_change_started")
+	var _throw = connect("change_started", self, "_on_change_started")
 	pause_mode = Node.PAUSE_MODE_PROCESS
 	_history.add(_get_current_scene_node().filename, null)
 

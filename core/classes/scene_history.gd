@@ -1,6 +1,6 @@
 extends Reference
 
-const MAX_HISTORY_LENGTH = 5
+const MAX_HISTORY_LENGTH = 10
 var _history = []
 
 

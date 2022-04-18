@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://core/ui/theme.tres" type="Theme" id=1]
 [ext_resource path="res://core/fonts/open-sans/open-sans-regular.ttf" type="DynamicFontData" id=4]
@@ -7,12 +7,6 @@
 [sub_resource type="DynamicFont" id=5]
 size = 60
 font_data = ExtResource( 4 )
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Label
-
-
-"
 
 [node name="Menu" type="Control"]
 anchor_right = 1.0
@@ -101,7 +95,6 @@ margin_right = 182.0
 margin_bottom = 72.0
 custom_colors/font_color = Color( 0.92549, 0.92549, 0.92549, 1 )
 text = "<GodotVersion>"
-script = SubResource( 1 )
 
 [node name="Credits" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -116,33 +109,32 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="MadeByLabel" type="Label" parent="Credits"]
-margin_right = 371.0
+margin_right = 243.0
 margin_bottom = 34.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "made by:"
 
 [node name="Developer1" type="Label" parent="Credits"]
 margin_top = 38.0
-margin_right = 371.0
+margin_right = 243.0
 margin_bottom = 72.0
 grow_horizontal = 0
 custom_colors/font_color = Color( 0.92549, 0.92549, 0.92549, 1 )
-text = "Crystal Bit community & Bakneko"
+text = "Crystal Bit community"
 
 [node name="Developer2" type="Label" parent="Credits"]
-visible = false
-margin_top = 86.0
-margin_right = 157.0
-margin_bottom = 125.0
+margin_top = 76.0
+margin_right = 243.0
+margin_bottom = 110.0
 grow_horizontal = 0
 custom_colors/font_color = Color( 0.886275, 0.87451, 0.87451, 1 )
-text = "Developer 2"
+text = "Bakneko Games"
 
 [node name="Developer3" type="Label" parent="Credits"]
 visible = false
-margin_top = 129.0
-margin_right = 157.0
-margin_bottom = 168.0
+margin_top = 76.0
+margin_right = 371.0
+margin_bottom = 110.0
 grow_horizontal = 0
 custom_colors/font_color = Color( 0.886275, 0.87451, 0.87451, 1 )
 text = "Developer 3"
