@@ -35,7 +35,7 @@ func fade_in(params = {}):
 func fade_out():
 	if progress.visible and not progress.is_completed():
 		yield(self, "progress_bar_filled")
-	anim.connect("animation_finished", self, "_on_fade_out_finished", [], CONNECT_ONESHOT)
+	var _throw = anim.connect("animation_finished", self, "_on_fade_out_finished", [], CONNECT_ONESHOT)
 	anim.play("transition-out")
 
 

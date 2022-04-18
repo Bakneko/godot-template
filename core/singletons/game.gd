@@ -1,7 +1,6 @@
-# Game autoload. Use `Game` global variable as a shortcut to access features.
-# Eg: `Game.change_scene("res://scenes/gameplay/gameplay.tscn)`
+# Game autoload. Use `Game` global variable to access.
+# Eg: `Game.change_scene("res://template/maps/gameplay/gameplay.tscn")`
 extends Node
-
 
 onready var transitions = get_node_or_null("/root/Transitions")
 

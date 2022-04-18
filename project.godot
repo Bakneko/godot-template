@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://core/singletons/scenes.gd"
 }, {
-"base": "Reference",
+"base": "CanvasLayer",
 "class": "Transition",
 "language": "GDScript",
 "path": "res://core/ui/transition/transition.gd"

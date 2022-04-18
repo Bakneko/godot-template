@@ -1,4 +1,4 @@
-# Scenes manager.
+# Scenes Manager.
 # When the loading of a new scene is completed, it calls
 # two methods on the new loaded scene (if they are defined):
 # 1. `pre_start(params)`: called as soon as the scene is loaded in memory.
