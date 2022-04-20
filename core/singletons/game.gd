@@ -71,19 +71,17 @@ func change_scene(scene: String, params = {}):
 		return
 	else:
 		# use multi-thread
-		scenes.change_scene_multithread(scene, params)
+		scenes.change_scene(scene, params)
 
 
 ## Restart current scene.
-func restart_scene():
+## If params is not {}, restart with given params.
+func restart_scene(params = {}):
 	var scene_data = scenes.get_last_loaded_scene_data()
-	change_scene(scene_data.path, scene_data.params)
-
-
-## Restart current scene, but use given parameters.
-func restart_scene_with_params(params):
-	var scene_data = scenes.get_last_loaded_scene_data()
-	change_scene(scene_data.path, params)
+	if params == {}:
+		change_scene(scene_data.path, scene_data.params)
+	else:
+		change_scene(scene_data.path, params)
 
 
 # ----------------------------------------
@@ -91,27 +89,11 @@ func restart_scene_with_params(params):
 # ----------------------------------------
 
 
-func _on_Transitions_transition_started(anim_name):
+func _on_Transitions_transition_started(_anim_name):
 	if pause_scenes_on_transitions:
 		get_tree().paused = true
 
 
-func _on_Transitions_transition_finished(anim_name):
+func _on_Transitions_transition_finished(_anim_name):
 	if pause_scenes_on_transitions:
 		get_tree().paused = false
-
-
-# ----------------------------------------
-# Add Script Node
-# ----------------------------------------
-
-
-func add_script(name, code_name, path):
-	var script: Node = load(path).new()
-	script.name = name
-	call_deferred("add_script_node", script, code_name)
-
-
-func add_script_node(node, code_name):
-	get_tree().root.add_child(node)
-	self[code_name] = node

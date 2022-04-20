@@ -4,16 +4,13 @@ extends Node
 signal change_started
 signal change_finished
 
-const MINIMUM_TRANSITION_DURATION = 300 # ms
+const MINIMUM_TRANSITION_DURATION = 200 # ms
 
 onready var transitions: Transition = get_node_or_null("/root/Transitions")
 onready var _history = preload("res://core/classes/scene_history.gd").new()
-onready var _loader_ri = \
-  preload("res://core/classes/resource_interactive_loader.gd").new()
-onready var _loader_mt = \
-  preload("res://core/classes/resource_multithread_loader.gd").new()
+onready var _loader = preload("res://core/classes/resource_loader.gd").new()
 
-# params caching
+# Parameter Caching.
 var _params = {}
 var _loading_start_time = 0
 
@@ -30,24 +27,22 @@ var _loading_start_time = 0
 #    gameplay input is unlocked.
 
 
+# ----------------------------------------
+# Entrypoints
+# ----------------------------------------
+
+
 func _ready():
-	_loader_mt.name = "ResourceLoaderMultithread"
-	add_child(_loader_mt)
-	_loader_ri.name = "ResourceInteractiveLoader"
-	add_child(_loader_ri)
+	# Load modules
+	_loader.name = "ResourceLoader"
+	add_child(_loader)
+	# Connect signals
 	if transitions:
-		_loader_mt.connect(
-			"resource_stage_loaded",
-			transitions,
-			"_on_resource_stage_loaded"
-		)
-		_loader_ri.connect(
-			"resource_stage_loaded",
-			transitions,
-			"_on_resource_stage_loaded"
-		)
-	var _throw = connect("change_started", self, "_on_change_started")
+		_loader.connect("resource_stage_loaded", transitions, "_on_resource_stage_loaded")
+	var _t = connect("change_started", self, "_on_change_started")
+	# Set pause mode
 	pause_mode = Node.PAUSE_MODE_PROCESS
+	# Add history to scene history data
 	_history.add(_get_current_scene_node().filename, null)
 
 
@@ -84,37 +79,13 @@ func _transition_appear(params):
 
 
 # Multithread interactive loading
-func change_scene_multithread(new_scene: String, params = {}):
+func change_scene(new_scene: String, params = {}):
 	emit_signal("change_started", new_scene, params)
 	_params = params
 	_loading_start_time = OS.get_ticks_msec()
 	_transition_appear(params)
-	_loader_mt.connect(
-		"resource_loaded",
-		self,
-		"_on_resource_loaded",
-		[],
-		CONNECT_ONESHOT
-	)
-	_loader_mt.load_scene(new_scene)
-
-
-# Single thread interactive loading
-func change_scene_background_loading(new_scene: String, params = {}):
-	_loader_ri.connect(
-		"resource_loaded",
-		self,
-		"_on_resource_loaded",
-		[],
-		CONNECT_ONESHOT
-	)
-	emit_signal("change_started", new_scene, params)
-	_params = params
-	_loading_start_time = OS.get_ticks_msec()
-	_transition_appear(params)
-	if transitions:
-		yield(transitions.anim, "animation_finished")
-	_loader_ri.load_scene(new_scene)
+	_loader.connect("resource_loaded", self, "_on_resource_loaded", [], CONNECT_ONESHOT)
+	_loader.load_scene(new_scene)
 
 
 func _on_change_started(new_scene, params):
@@ -125,11 +96,11 @@ func _on_resource_loaded(resource):
 	if transitions and transitions.is_transition_in_playing():
 		yield(transitions.anim, "animation_finished")
 	var load_time = OS.get_ticks_msec() - _loading_start_time # ms
-	print("{scn} loaded in {elapsed}ms".format({
+	print("[INFO] {scn} loaded in {elapsed}ms.".format({
 		'scn': resource.resource_path,
 		'elapsed': load_time
 	}))
-	# artificially wait some time in order to have a gentle scene transition
+	# Artificially wait some time in order to have a gentle scene transition
 	if transitions and load_time < MINIMUM_TRANSITION_DURATION:
 		yield(get_tree().create_timer((MINIMUM_TRANSITION_DURATION - load_time) / 1000.0), "timeout")
 	_set_new_scene(resource)

@@ -3,7 +3,7 @@ extends Control
 func _ready() -> void:
 	$Version/GameVersion.text = ProjectSettings.get_setting("application/config/version")
 	$Version/GodotVersion.text = "Godot Engine %s" % Engine.get_version_info().string
-	# needed for gamepads to work
+	# Needed for gamepads to work
 	$VBoxContainer/PlayButton.grab_focus()
 	pass
 
