@@ -7,7 +7,7 @@
 .mono/
 data_*/
 
-# Builds/export directory
+# Builds/export folder
 [Bb]uilds/
 
 # Sandbox folder (for testing in local machine)
@@ -16,7 +16,7 @@ data_*/
 # Imported translations (automatically generated from CSV files)
 *.translation
 
-# macOS
+# macOS ignores
 .DS_Store
 
 # VSCode

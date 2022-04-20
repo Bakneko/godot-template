@@ -1,14 +1,11 @@
 extends Control
 
-
-func _ready():
+func _ready() -> void:
 	$Version/GameVersion.text = ProjectSettings.get_setting("application/config/version")
-	$Version/GodotVersion.text = "Godot %s" % Engine.get_version_info().string
-	# needed for gamepads to work
+	$Version/GodotVersion.text = "Godot Engine %s" % Engine.get_version_info().string
+	# Needed for gamepads to work
 	$VBoxContainer/PlayButton.grab_focus()
-	if OS.has_feature('HTML5'):
-		$VBoxContainer/ExitButton.queue_free()
-
+	pass
 
 func _on_PlayButton_pressed() -> void:
 	var params = {
@@ -22,6 +19,7 @@ func _on_PlayButton_pressed() -> void:
 		},
 	}
 	Game.change_scene("res://template/maps/gameplay/gameplay.tscn", params)
+	pass
 
 
 func _on_ExitButton_pressed() -> void:
@@ -34,3 +32,4 @@ func _on_ExitButton_pressed() -> void:
 		yield(transitions.anim, "animation_finished")
 		yield(get_tree().create_timer(0.3), "timeout")
 	get_tree().quit()
+	pass

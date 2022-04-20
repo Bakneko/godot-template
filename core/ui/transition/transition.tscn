@@ -1,9 +1,9 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://template/core/fonts/open-sans/open-sans-regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://template/core/images/icon.png" type="Texture" id=2]
-[ext_resource path="res://addons/template/transition/progress.gd" type="Script" id=3]
-[ext_resource path="res://addons/template/transition/transition.gd" type="Script" id=4]
+[ext_resource path="res://core/fonts/open-sans/open-sans-regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://core/images/icon.png" type="Texture" id=2]
+[ext_resource path="res://core/ui/transition/progress.gd" type="Script" id=3]
+[ext_resource path="res://core/ui/transition/transition.gd" type="Script" id=4]
 
 [sub_resource type="Animation" id=9]
 length = 0.001
@@ -40,36 +40,6 @@ tracks/0/keys = {
 [sub_resource type="DynamicFont" id=4]
 size = 18
 font_data = ExtResource( 1 )
-
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.305882, 0.560784, 0.74902, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.113725, 0.203922, 0.282353, 1 )
-border_blend = true
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.176471, 0.282353, 0.372549, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.109804, 0.113725, 0.129412, 1 )
-border_blend = true
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
 
 [sub_resource type="Animation" id=10]
 length = 0.001
@@ -256,8 +226,7 @@ margin_right = -101.0
 margin_bottom = -15.0
 script = ExtResource( 3 )
 __meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
 [node name="Spinner" type="TextureRect" parent="ColorRect/Progress"]
@@ -292,8 +261,6 @@ margin_top = -11.0
 margin_right = 85.0
 margin_bottom = 11.0
 custom_fonts/font = SubResource( 4 )
-custom_styles/fg = SubResource( 2 )
-custom_styles/bg = SubResource( 3 )
 max_value = 1.0
 percent_visible = false
 
